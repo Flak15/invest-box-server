@@ -1,0 +1,8 @@
+{
+  "auth": {
+    "users": {
+        "admin": "supersecret",
+        "user": "123"
+    }
+  }
+}
