@@ -1,9 +1,11 @@
 const config = require('config');
-
+var cors = require('cors');
 var express = require('express');
 var app = express();
 const basicAuth = require('express-basic-auth')
 const usersDB = config.get('auth');
+
+app.use(cors());
 
 app.use(basicAuth(usersDB));
 
