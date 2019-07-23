@@ -3,8 +3,13 @@ var cors = require('cors');
 var express = require('express');
 var db = require('./db');
 var app = express();
-const basicAuth = require('express-basic-auth')
-const usersDB = config.get('auth');
+const basicAuth = require('express-basic-auth');
+
+const testAuth = (username, pass) => {
+  const usersDB = config.get('auth');
+  console.log(`username: ${username}`);
+  return usersDB.users.hasOwnProperty(username);
+};
 
 app.use(cors());
 
@@ -13,20 +18,12 @@ app.post('/user', (req, res) => {
   res.send('Done');
 });
 
-app.use(basicAuth(usersDB));
+app.use(basicAuth({ authorizer: testAuth }));
+
+app.get('/', (req, res) => res.send(`Hello, ${req.auth.user}`))
 
 app.get('/context', function (req, res) {
   res.send({ user: req.auth.user });
-});
-
-app.use((req, res, next) =>  {
-  // res.send('Not found');
-  console.log(req.path, 'Not found');
-  return next();
-});
-
-app.use((req, res) =>  {
-  res.send('Not found');
 });
 
 

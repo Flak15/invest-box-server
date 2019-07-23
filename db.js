@@ -7,22 +7,22 @@ const url = 'mongodb://localhost:27017';
 const dbName = 'investBoxDB';
 const client = new MongoClient(url, { useNewUrlParser: true });
 
-const interactWithDB = (fn) => {
-  client.connect(async (err) => {
-    if (err) {
-      reject(err);
-    } else {
-      console.log("Connected successfully to server");
-      const db = client.db(dbName);
-      try {
-        await fn;
-      } catch (e) {
-        reject(e);
-      }
-      client.close();
-    }
-  });
-}
+// const interactWithDB = (fn) => {
+//   client.connect(async (err) => {
+//     if (err) {
+//       reject(err);
+//     } else {
+//       console.log("Connected successfully to server");
+//       const db = client.db(dbName);
+//       try {
+//         await fn;
+//       } catch (e) {
+//         reject(e);
+//       }
+//       client.close();
+//     }
+//   });
+// }
 
 
 const insertUser = ({ user, pass }) => {
@@ -47,8 +47,29 @@ const insertUser = ({ user, pass }) => {
   })
 };
 
+const getUser = ({ user }) => {
+  return new Promise((resolve, reject) => {
+
+    client.connect(async (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log("Connected successfully to server");
+        const db = client.db(dbName);
+        const users = db.collection('users');
+        try {
+          await users.find({ user: user });
+        } catch (e) {
+          reject(e);
+        }
+        client.close();
+      }
+
+    });
+  })
+};
 
 
 module.exports = {
-  insertUser,
+  insertUser, getUser
 };
