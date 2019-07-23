@@ -5,14 +5,30 @@ const url = 'mongodb://localhost:27017';
 
 // Database Name
 const dbName = 'investBoxDB';
+const client = new MongoClient(url, { useNewUrlParser: true });
+
+const interactWithDB = (fn) => {
+  client.connect(async (err) => {
+    if (err) {
+      reject(err);
+    } else {
+      console.log("Connected successfully to server");
+      const db = client.db(dbName);
+      try {
+        await fn;
+      } catch (e) {
+        reject(e);
+      }
+      client.close();
+    }
+  });
+}
+
 
 const insertUser = ({ user, pass }) => {
   return new Promise((resolve, reject) => {
-    // Create a new MongoClient
-    const client = new MongoClient(url, { useNewUrlParser: true });
 
-    // Use connect method to connect to the Server
-    client.connect(async function(err) {
+    client.connect(async (err) => {
       if (err) {
         reject(err);
       } else {
@@ -20,15 +36,18 @@ const insertUser = ({ user, pass }) => {
         const db = client.db(dbName);
         const users = db.collection('users');
         try {
-          await users.insertOne({ user, pass});
+          await users.insertOne({ user, pass });
         } catch (e) {
           reject(e);
         }
         client.close();
       }
+
     });
   })
-}
+};
+
+
 
 module.exports = {
   insertUser,
