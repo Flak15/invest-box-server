@@ -58,7 +58,10 @@ const getUser = ({ user, pass }) => {
         const db = client.db(dbName);
         const users = db.collection('users');
         try {
-          await users.find({ user: user });
+          await users.find({ user: user, pass: pass }).toArray((error, doc) => {
+            resolve(doc);
+          });
+
         } catch (e) {
           reject(e);
         }

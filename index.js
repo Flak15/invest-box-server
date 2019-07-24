@@ -8,7 +8,11 @@ const basicAuth = require('express-basic-auth');
 const testAuth = (username, pass, cb) => {
   const usersDB = config.get('auth');
   console.log(`username: ${username}`);
-  return usersDB.users.hasOwnProperty(username);
+  db.getUser({user: username, pass: pass}).then(r => {
+    cb(null, r);
+    console.log(r);
+  });
+
 };
 
 app.use(cors());
