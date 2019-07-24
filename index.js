@@ -5,7 +5,7 @@ var db = require('./db');
 var app = express();
 const basicAuth = require('express-basic-auth');
 
-const testAuth = (username, pass) => {
+const testAuth = (username, pass, cb) => {
   const usersDB = config.get('auth');
   console.log(`username: ${username}`);
   return usersDB.users.hasOwnProperty(username);
@@ -18,7 +18,7 @@ app.post('/user', (req, res) => {
   res.send('Done');
 });
 
-app.use(basicAuth({ authorizer: testAuth }));
+app.use(basicAuth({ authorizer: testAuth, authorizeAsync: true, }));
 
 app.get('/', (req, res) => res.send(`Hello, ${req.auth.user}`))
 

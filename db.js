@@ -47,7 +47,7 @@ const insertUser = ({ user, pass }) => {
   })
 };
 
-const getUser = ({ user }) => {
+const getUser = ({ user, pass }) => {
   return new Promise((resolve, reject) => {
 
     client.connect(async (err) => {
