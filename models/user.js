@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const config = require('config');
+const client = require('./client');
 
 // Connection URL
 const dbConfig = config.get('db');
@@ -8,7 +9,6 @@ const url = dbConfig.url;
 
 // Database Name
 const dbName = dbConfig.name;
-const client = new MongoClient(url, dbConfig);
 
 // const interactWithDB = (fn) => {
 //   client.connect(async (err) => {
@@ -70,8 +70,6 @@ const getUser = ({ user, pass }) => {
     });
   })
 };
-
-client.close();
 
 module.exports = {
   insertUser, getUser
