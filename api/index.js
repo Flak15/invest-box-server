@@ -12,10 +12,10 @@ const testAuth = (username, pass, cb) => {
   });
 };
 
-app.get('/user', (req, res) => {
-  user.insertUser({ user: 'user1', pass: '123' });
-  res.send('Done');
-});
+// app.get('/user', (req, res) => {
+//   user.insertUser({ user: 'user1', pass: '123' });
+//   res.send('Done');
+// });
 
 app.use(cors());
 
