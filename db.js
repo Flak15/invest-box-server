@@ -1,15 +1,14 @@
 const MongoClient = require('mongodb').MongoClient;
+const config = require('config');
 
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const dbConfig = config.get('db');
+
+const url = dbConfig.url;
 
 // Database Name
-const dbName = 'investBoxDB';
-const client = new MongoClient(url, {
-    useNewUrlParser: true,
-    reconnectTries: Number.MAX_VALUE,
-    reconnectInterval: 1000,
-});
+const dbName = dbConfig.name;
+const client = new MongoClient(url, dbConfig);
 
 // const interactWithDB = (fn) => {
 //   client.connect(async (err) => {
@@ -51,7 +50,6 @@ const insertUser = ({ user, pass }) => {
 
 const getUser = ({ user, pass }) => {
   return new Promise((resolve, reject) => {
-
     client.connect(async (err) => {
       if (err) {
         reject(err);
