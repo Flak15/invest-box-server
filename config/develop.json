@@ -1,8 +1,10 @@
 {
+  "port": 4000,
   "db": {
     "url": "mongodb://localhost:27017",
     "name": "investBoxDB",
     "connectTimeoutMS": 60000,
-    "useNewUrlParser": true
+    "useNewUrlParser": true,
+    "useUnifiedTopology": true
   }
 }
