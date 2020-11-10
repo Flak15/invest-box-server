@@ -20,7 +20,11 @@ router.post('/update', async (req, res) => {
 
 router.post('/add', async (req, res) => { // curl -X POST -H "Content-Type: application/json" --data '{"username": "user2", "symbol":"AAPL", "value":1}' localhost:4000/portfolio/add
   const { username, symbol, value } = req.body; // normalize symbol in frontend
-  
+  // try {
+  //   const portfolio = await Portfolio.getPortfolio({ userId: user._id });
+  // } catch (e) {
+
+  // }
   try {
     const instrument = await Instrument.getInstrument({ symbol });
     if (!instrument) {

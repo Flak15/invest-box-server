@@ -1,30 +1,16 @@
 import client from './Client.js';
 import config from 'config';
-
+import encrypt from '../services/encrypt.js';
 const dbConfig = config.get('db');
 const dbName = dbConfig.name;
 
-const insertUser = ({ user, pass }) => {
-  return new Promise((resolve, reject) => {
-    client.connect(async (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        const db = client.db(dbName);
-        const users = db.collection('users');
-        try {
-          const findedUser = await users.findOne({ user });
-          if (findedUser) {
-            return reject('User already exist');
-          }
-          await users.insertOne({ user, pass: encrypt(pass) });
-          console.log('User created: ', user, encrypt(pass))
-        } catch (e) {
-          reject(e);
-        }
-      }
-    });
-  })
+const insertUser = async ({ user, pass }) => {
+  await client.connect();
+  const db = client.db(dbName);
+  const users = db.collection('users');
+  await users.ensureIndex({ user: 1 }, { unique: true });
+  await users.insertOne({ user, pass: encrypt(pass) });
+  await client.close();
 };
 
 const getUser = ({ user }) => {

@@ -8,11 +8,14 @@ const addInstrument = async ({ symbol, shortName, price }) => {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const Instruments = db.collection('Instruments');
-    await Instruments.insertOne({ symbol, price, shortName });
+    const instruments = db.collection('Instruments');
+    await instruments.ensureIndex({ symbol: 1 }, { unique: true });
+    await instruments.insertOne({ symbol, price, shortName });
   } catch (e) {
     console.log(e);
     throw new Error(e);
+  } finally {
+    // await client.close();
   }
 };
 
@@ -25,6 +28,8 @@ const getInstrument = async ({ symbol }) => {
   } catch (e) {
     console.log(e);
     throw new Error(e);
+  } finally {
+    // await client.close();
   }
 };
 
@@ -37,7 +42,23 @@ const updateInstrument = async ({ symbol, price }) => {
   } catch (e) {
     console.log(e);
     throw new Error(e);
+  } finally {
+    // await client.close();
   }
 };
 
-export default { addInstrument, getInstrument, updateInstrument };
+const getAllInstruments = async () => {
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    const Instruments = db.collection('Instruments');
+    return await Instruments.find({}).toArray();
+  } catch (e) {
+    console.log(e);
+    throw new Error(e);
+  } finally {
+    // await client.close();
+  }
+};
+
+export default { addInstrument, getInstrument, updateInstrument, getAllInstruments };

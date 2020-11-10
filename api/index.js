@@ -3,7 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import User from '../models/User.js';
 import basicAuth from 'express-basic-auth';
-import encrypt from '../encrypt.js';
+import encrypt from '../services/encrypt.js';
 
 import portfolio from './portfolio.api.js';
 
@@ -20,13 +20,14 @@ const testAuth = (username, pass, cb) => {
   });
 };
 app.use('/portfolio', portfolio);
-app.post('/user', (req, res) => {
+app.post('/user', async (req, res) => {
   const { user, pass } = req.body;
-  // console.log("new user: ", user, pass);
-    User.insertUser({ user, pass })
-      .then(() => {
-        res.send('Done');
-      }).catch(e => res.send(e));
+  try {
+    await User.insertUser({ user, pass });
+    res.end('User created');
+  } catch (e) {
+    res.json({ message: e.message });
+  }
 });
 app.use(cors());
 

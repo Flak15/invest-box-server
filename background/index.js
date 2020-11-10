@@ -1,10 +1,22 @@
-import axios from 'axios';
+import getPrice from '../services/yahoo.js';
+import Instrument from '../models/Instrument.js';
 
-const app = async () => {
-	const res = await axios.get("https://query1.finance.yahoo.com/v10/finance/quoteSummary/RUB=x?modules=price");
-	console.log(res.data.quoteSummary.result[0].price);
+const updatePrices = async () => {
+	const instruments = await Instrument.getAllInstruments();
+	const symbols = instruments.map(instrument => instrument.symbol)
+	console.log(symbols);
+	await Promise.all(
+		symbols.map(async (symbol) => {
+			const newPrice = await getPrice(symbol);
+			console.log(newPrice);
+			await Instrument.updateInstrument({ symbol, price: newPrice});
+		})
+	)
+};
+export default () => {
+	setInterval(() => {
+		updatePrices();
+		console.log('tick');
+	  }, 10000);
 }
 
-setInterval(() => {
-  
-}, 5 * 60 * 1000)

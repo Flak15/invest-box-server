@@ -9,10 +9,13 @@ const addInstument = async ({ userId, symbol, value }) => {
     await client.connect();
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
+    await portfolio.ensureIndex({ symbol: 1 }, { unique: true });
     await portfolio.insertOne({ userId, symbol, value });
   } catch (e) {
     console.log(e);
     throw new Error(e);
+  } finally {
+    // await client.close();
   }
 };
 
@@ -25,6 +28,8 @@ const removeInstrument = async ({ userId, symbol }) => {
   } catch (e) {
     console.log(e);
     throw new Error(e);
+  } finally {
+    // await client.close();
   }
 };
 const updateValue = async ({ userId, symbol, value }) => {
@@ -36,6 +41,8 @@ const updateValue = async ({ userId, symbol, value }) => {
   } catch (e) {
     console.log(e);
     throw new Error(e);
+  } finally {
+    // await client.close();
   }
 };
 
@@ -49,6 +56,8 @@ const getPortfolio = async ({ userId }) => {
   } catch (e) {
     console.log(e);
     throw new Error(e);
+  } finally {
+    // await client.close();
   }
 };
 
