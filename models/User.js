@@ -5,35 +5,25 @@ const dbConfig = config.get('db');
 const dbName = dbConfig.name;
 
 const insertUser = async ({ user, pass }) => {
-  await client.connect();
+  // await client.connect();
   const db = client.db(dbName);
   const users = db.collection('users');
-  await users.ensureIndex({ user: 1 }, { unique: true });
+  await users.createIndex({ user: 1 }, { unique: true });
   await users.insertOne({ user, pass: encrypt(pass) });
-  await client.close();
+  client.close();
 };
 
-const getUser = ({ user }) => {
-  return new Promise((resolve, reject) => {
-    client.connect(async (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        const db = client.db(dbName);
-        const users = db.collection('users');
-        try {
-          const findedUser = await users.findOne({ user: user });
-          console.log('db res:', findedUser);
-          resolve(findedUser);
-        } catch (e) {
-          console.log('Error while getting from DB');
-          reject(e);
-        }
-      }
-    });
-  })
+const getUser = async ({ user }) => {
+  const db = client.db(dbName);
+  const users = db.collection('users');
+  try {
+    return await users.findOne({ user: user });
+  } catch (e) {
+    console.log('Error while getting user from DB: ', e.message);
+    throw new Error(e);
+  }
 };
 
-client.close(); // in another place
+
 
 export default { getUser, insertUser };

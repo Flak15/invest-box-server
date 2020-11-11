@@ -1,5 +1,6 @@
 {
   "port": 4000,
+  "updateTime": 10000,
   "db": {
     "url": "mongodb://localhost:27017",
     "name": "investBoxDB",

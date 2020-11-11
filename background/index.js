@@ -1,5 +1,6 @@
 import getPrice from '../services/yahoo.js';
 import Instrument from '../models/Instrument.js';
+import config from 'config';
 
 const updatePrices = async () => {
 	const instruments = await Instrument.getAllInstruments();
@@ -11,12 +12,16 @@ const updatePrices = async () => {
 			console.log(newPrice);
 			await Instrument.updateInstrument({ symbol, price: newPrice});
 		})
-	)
+	);
+	setTimeout(() => {
+		updatePrices();
+	}, config.get('updateTime'));
 };
+
 export default () => {
-	setInterval(() => {
+	setTimeout(() => {
 		updatePrices();
 		console.log('tick');
-	  }, 10000);
+	  }, config.get('updateTime'));
 }
 

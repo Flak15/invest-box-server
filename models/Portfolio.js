@@ -6,7 +6,7 @@ const dbName = dbConfig.name;
 
 const addInstument = async ({ userId, symbol, value }) => {
   try {
-    await client.connect();
+    // await client.connect();
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
     await portfolio.ensureIndex({ symbol: 1 }, { unique: true });
@@ -21,7 +21,7 @@ const addInstument = async ({ userId, symbol, value }) => {
 
 const removeInstrument = async ({ userId, symbol }) => {
   try {
-    await client.connect();
+    // await client.connect();
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
     await portfolio.deleteOne({ userId, symbol });
@@ -34,7 +34,7 @@ const removeInstrument = async ({ userId, symbol }) => {
 };
 const updateValue = async ({ userId, symbol, value }) => {
   try {
-    await client.connect();
+    // await client.connect();
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
     await portfolio.updateOne({ userId, symbol }, { $set: { value }});
@@ -48,7 +48,7 @@ const updateValue = async ({ userId, symbol, value }) => {
 
 const getPortfolio = async ({ userId }) => {
   try {
-    await client.connect();
+    // await client.connect();
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
     const cursor = portfolio.find({ userId });
