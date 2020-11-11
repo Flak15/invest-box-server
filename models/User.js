@@ -5,7 +5,6 @@ const dbConfig = config.get('db');
 const dbName = dbConfig.name;
 
 const insertUser = async ({ user, pass }) => {
-  // await client.connect();
   const db = client.db(dbName);
   const users = db.collection('users');
   await users.createIndex({ user: 1 }, { unique: true });
@@ -23,7 +22,5 @@ const getUser = async ({ user }) => {
     throw new Error(e);
   }
 };
-
-
 
 export default { getUser, insertUser };

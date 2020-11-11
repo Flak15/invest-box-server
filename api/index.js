@@ -1,4 +1,3 @@
-import config from 'config';
 import cors from 'cors';
 import express from 'express';
 import User from '../models/User.js';
@@ -10,16 +9,16 @@ import portfolio from './portfolio.api.js';
 var app = express();
 app.use(express.json());
 
-const testAuth = (username, pass, cb) => {
+const testAuth = (username, password, cb) => {
   User.getUser({ user: username }).then(finded => {
     if (!finded) {
       return cb(null, false);
     }
-    const isAuthenticated = finded.pass === encrypt(pass);
+    const isAuthenticated = finded.pass === encrypt(password);
     cb(null, isAuthenticated);
   });
 };
-app.use('/portfolio', portfolio);
+
 app.post('/user', async (req, res) => {
   const { user, pass } = req.body;
   try {
@@ -31,9 +30,12 @@ app.post('/user', async (req, res) => {
 });
 app.use(cors());
 
-// app.use(basicAuth({ authorizer: testAuth, authorizeAsync: true, unauthorizedResponse: 'Authorization failed' }));
+app.use(basicAuth({ authorizer: testAuth, authorizeAsync: true, unauthorizedResponse: 'Authorization failed' }));
+app.use('/portfolio', portfolio);
 
-
+app.get('/', function (req, res) {
+  res.send('ok');
+});
 
 
 app.get('/context', function (req, res) {
