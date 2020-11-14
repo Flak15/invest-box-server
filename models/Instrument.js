@@ -4,12 +4,12 @@ import config from 'config';
 const dbConfig = config.get('db');
 const dbName = dbConfig.name;
 
-const addInstrument = async ({ symbol, shortName, price }) => {
+const addInstrument = async ({ symbol, shortName, price, currency }) => {
   try {
     const db = client.db(dbName);
     const instruments = db.collection('Instruments');
     await instruments.createIndex({ symbol: 1 }, { unique: true });
-    await instruments.insertOne({ symbol, price, shortName });
+    await instruments.insertOne({ symbol, price, shortName, currency });
   } catch (e) {
     console.log(e);
     throw new Error(e);
