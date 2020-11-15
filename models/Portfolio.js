@@ -8,7 +8,7 @@ const addInstument = async ({ userId, symbol, value }) => {
   try {
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
-    await portfolio.createIndex({ symbol: 1 }, { unique: true });
+    await portfolio.createIndex({ symbol: 1, userId: 1 }, { unique: true }); // unique by symbol and username
     await portfolio.insertOne({ userId, symbol, value });
   } catch (e) {
     console.log(e);
