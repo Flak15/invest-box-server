@@ -1,10 +1,14 @@
 import client from './Client.js';
 import config from 'config';
-
-const dbConfig = config.get('db');
+import { IdbConfig } from '../types/index';
+const dbConfig: IdbConfig = config.get('db');
 const dbName = dbConfig.name;
-
-const addInstument = async ({ userId, symbol, value }) => {
+interface IaddInstument {
+  userId: string,
+  symbol: string,
+  value: number,
+}
+const addInstument = async ({ userId, symbol, value }: IaddInstument) => {
   try {
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
@@ -15,8 +19,11 @@ const addInstument = async ({ userId, symbol, value }) => {
     throw new Error(e);
   }
 };
-
-const removeInstrument = async ({ userId, symbol }) => {
+interface IremoveInstrument {
+  userId: string,
+  symbol: string,
+}
+const removeInstrument = async ({ userId, symbol }: IremoveInstrument) => {
   try {
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
@@ -26,7 +33,12 @@ const removeInstrument = async ({ userId, symbol }) => {
     throw new Error(e);
   }
 };
-const updateValue = async ({ userId, symbol, value }) => {
+interface IupdateValue {
+  userId: string,
+  symbol: string,
+  value: number,
+}
+const updateValue = async ({ userId, symbol, value }: IupdateValue) => {
   try {
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');
@@ -36,8 +48,10 @@ const updateValue = async ({ userId, symbol, value }) => {
     throw new Error(e);
   }
 };
-
-const getPortfolio = async ({ userId }) => {
+interface IgetPortfolio {
+  userId: string,
+}
+const getPortfolio = async ({ userId }: IgetPortfolio): Promise<any[]> => {
   try {
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');

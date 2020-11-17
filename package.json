@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "server": "nodemon src/app.js"
+    "start": "node dest/app.js",
+    "server": "nodemon dist/app.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/Flak15/invest-box-server#readme",
   "dependencies": {
+    "@types/config": "0.0.36",
+    "@types/crypto-js": "^4.0.1",
+    "@types/mongodb": "^3.5.33",
     "@types/node": "^14.14.7",
     "axios": "^0.21.0",
     "config": "^3.3.2",

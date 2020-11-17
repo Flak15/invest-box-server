@@ -1,18 +1,25 @@
 import client from './Client.js';
 import config from 'config';
 import encrypt from '../services/encrypt.js';
-const dbConfig = config.get('db');
-const dbName = dbConfig.name;
+import { IdbConfig } from '../types/index';
 
-const insertUser = async ({ user, pass }) => {
+const dbConfig: IdbConfig = config.get('db');
+const dbName = dbConfig.name;
+interface IinsertUser {
+  user: string,
+  pass: string
+}
+const insertUser = async ({ user, pass }: IinsertUser) => {
   const db = client.db(dbName);
   const users = db.collection('users');
   await users.createIndex({ user: 1 }, { unique: true });
   await users.insertOne({ user, pass: encrypt(pass) });
   client.close();
 };
-
-const getUser = async ({ user }) => {
+interface IgetUser {
+  user: string,
+}
+const getUser = async ({ user }: IgetUser) => {
   const db = client.db(dbName);
   const users = db.collection('users');
   try {

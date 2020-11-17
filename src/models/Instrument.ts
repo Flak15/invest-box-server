@@ -1,10 +1,11 @@
 import client from './Client.js';
 import config from 'config';
+import { IdbConfig, IpriceData } from '../types/index';
 
-const dbConfig = config.get('db');
+const dbConfig: IdbConfig = config.get('db');
 const dbName = dbConfig.name;
 
-const addInstrument = async ({ symbol, shortName, price, currency }) => {
+const addInstrument = async ({ symbol, shortName, price, currency }: IpriceData) => {
   try {
     const db = client.db(dbName);
     const instruments = db.collection('Instruments');
@@ -15,8 +16,10 @@ const addInstrument = async ({ symbol, shortName, price, currency }) => {
     throw new Error(e);
   }
 };
-
-const getInstrument = async ({ symbol }) => {
+interface IgetInstrument {
+  symbol: string
+}
+const getInstrument = async ({ symbol }: IgetInstrument) => {
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');
@@ -26,8 +29,11 @@ const getInstrument = async ({ symbol }) => {
     throw new Error(e);
   }
 };
-
-const updateInstrument = async ({ symbol, price }) => {
+interface IupdateInstrument {
+  symbol: string,
+  price: number
+}
+const updateInstrument = async ({ symbol, price }: IupdateInstrument) => {
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');
@@ -38,7 +44,7 @@ const updateInstrument = async ({ symbol, price }) => {
   }
 };
 
-const getAllInstruments = async () => {
+const getAllInstruments = async (): Promise<any[]> => {
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');
