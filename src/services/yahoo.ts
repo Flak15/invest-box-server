@@ -1,9 +1,17 @@
 import axios from 'axios';
 
-const getPriceData = async (s) => {
+interface priceData {
+  price: number,
+  currency: string,
+  shortName: string,
+  exchangeName: string,
+  symbol: string
+}
+
+const getPriceData = async (s: string): Promise<priceData> => {
   try {
     const res = await axios.get(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${s}?modules=price`);
-    const price = res.data.quoteSummary.result[0].price.regularMarketPrice.raw;
+    const price: number = res.data.quoteSummary.result[0].price.regularMarketPrice.raw;
     const { shortName, currency, exchangeName, symbol } = res.data.quoteSummary.result[0].price;
     return { price, currency, shortName, exchangeName, symbol };
   } catch (e) {

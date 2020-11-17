@@ -9,16 +9,6 @@ import instrument from './instrument.api.js';
 var app = express();
 app.use(express.json());
 
-// const testAuth = (username, password, cb) => {
-//   User.getUser({ user: username }).then(finded => {
-//     if (!finded) {
-//       return cb(null, false);
-//     }
-//     const isAuthenticated = finded.pass === encrypt(password);
-//     cb(null, isAuthenticated);
-//   });
-// };
-
 const basicAuthorizer = (user, pass, cb) => {
   User.getUser({ user }).then(finded => {
     if (!finded) {
