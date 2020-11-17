@@ -1,6 +1,6 @@
 import client from './Client.js';
 import config from 'config';
-import { IdbConfig, IpriceData } from '../types/index';
+import { IdbConfig, IpriceData, Iinstrument } from '../types/index';
 
 const dbConfig: IdbConfig = config.get('db');
 const dbName = dbConfig.name;
@@ -19,7 +19,7 @@ const addInstrument = async ({ symbol, shortName, price, currency }: IpriceData)
 interface IgetInstrument {
   symbol: string
 }
-const getInstrument = async ({ symbol }: IgetInstrument) => {
+const getInstrument = async ({ symbol }: IgetInstrument): Promise<Iinstrument> => {
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');
@@ -44,7 +44,7 @@ const updateInstrument = async ({ symbol, price }: IupdateInstrument) => {
   }
 };
 
-const getAllInstruments = async (): Promise<any[]> => {
+const getAllInstruments = async (): Promise<Iinstrument[]> => {
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');

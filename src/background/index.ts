@@ -5,12 +5,10 @@ import config from 'config';
 const updatePrices = async () => {
 	const instruments = await Instrument.getAllInstruments();
 	const symbols = instruments.map(instrument => instrument.symbol)
-	console.log(symbols);
 	await Promise.all(
 		symbols.map(async (symbol) => {
-			const newPrice = await getPrice(symbol);
-			console.log(newPrice);
-			await Instrument.updateInstrument({ symbol, price: newPrice});
+			const newPriceData = await getPrice(symbol);
+			await Instrument.updateInstrument({ symbol, price: newPriceData.price });
 		})
 	);
 	setTimeout(() => {

@@ -1,6 +1,6 @@
 import client from './Client.js';
 import config from 'config';
-import { IdbConfig } from '../types/index';
+import { IdbConfig, Iportfolio } from '../types/index';
 const dbConfig: IdbConfig = config.get('db');
 const dbName = dbConfig.name;
 interface IaddInstument {
@@ -51,7 +51,7 @@ const updateValue = async ({ userId, symbol, value }: IupdateValue) => {
 interface IgetPortfolio {
   userId: string,
 }
-const getPortfolio = async ({ userId }: IgetPortfolio): Promise<any[]> => {
+const getPortfolio = async ({ userId }: IgetPortfolio): Promise<Iportfolio[]> => {
   try {
     const db = client.db(dbName);
     const portfolio = db.collection('portfolio');

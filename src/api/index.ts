@@ -5,22 +5,22 @@ import basicAuth from 'express-basic-auth';
 import encrypt from '../services/encrypt.js';
 import portfolio from './portfolio.api.js';
 import instrument from './instrument.api.js';
-
-var app = express();
+import { IauthData } from '../types/index';
+const app = express();
 app.use(express.json());
 
-const basicAuthorizer = (user, pass, cb) => {
-  User.getUser({ user }).then(finded => {
+const basicAuthorizer = (username: string, pass: string, cb) => {
+  User.getUser({ username }).then(finded => {
     if (!finded) {
       return cb(null, false);
     }
-    const isPassEqual = finded.pass === encrypt(pass);
+    const isPassEqual: boolean = finded.pass === encrypt(pass);
     cb(null, isPassEqual);
   });
 };
 
 app.post('/user', async (req, res) => {
-  const { user, pass } = req.body;
+  const { user, pass }: IauthData = req.body;
   try {
     await User.insertUser({ user, pass });
     res.end('User created');

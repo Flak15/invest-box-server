@@ -13,3 +13,29 @@ export interface IpriceData {
   exchangeName: string,
   symbol: string
 }
+
+export interface IauthData {
+  user: string,
+  pass: string
+}
+
+export interface Iportfolio {
+  _id: string,
+  userId: string,
+  symbol: string,
+  value: number
+}
+
+export interface Iinstrument {
+  _id: string,
+  symbol: string,
+  price: number,
+  shortName: string,
+  currency: string
+}
+
+export interface Iuser {
+  _id: string,
+  user: string,
+  pass: string
+}

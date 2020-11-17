@@ -1,7 +1,7 @@
 import client from './Client.js';
 import config from 'config';
 import encrypt from '../services/encrypt.js';
-import { IdbConfig } from '../types/index';
+import { IdbConfig, Iuser } from '../types/index';
 
 const dbConfig: IdbConfig = config.get('db');
 const dbName = dbConfig.name;
@@ -17,13 +17,13 @@ const insertUser = async ({ user, pass }: IinsertUser) => {
   client.close();
 };
 interface IgetUser {
-  user: string,
+  username: string,
 }
-const getUser = async ({ user }: IgetUser) => {
+const getUser = async ({ username }: IgetUser): Promise<Iuser> => {
   const db = client.db(dbName);
   const users = db.collection('users');
   try {
-    return await users.findOne({ user: user });
+    return await users.findOne({ user: username });
   } catch (e) {
     console.log('Error while getting user from DB: ', e.message);
     throw new Error(e);

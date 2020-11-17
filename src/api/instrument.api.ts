@@ -5,10 +5,10 @@ import getPriceData from '../services/yahoo.js';
 const router = Router();
 
 router.post('/add', async (req, res) => {
-  const { symbol } = req.body; // normalize symbol in frontend
+  const symbol: string = req.body.symbol;
   try {
-    const price = await getPriceData(symbol);
-    await Instrument.addInstrument({ symbol, price });
+    const priceData = await getPriceData(symbol);
+    await Instrument.addInstrument(priceData);
     res.json({ message: 'instrument added', symbol });
   }
   catch (e) {
