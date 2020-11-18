@@ -19,7 +19,7 @@ const addInstrument = async ({ symbol, shortName, price, currency }: IpriceData)
 interface IgetInstrument {
   symbol: string
 }
-const getInstrument = async ({ symbol }: IgetInstrument): Promise<Iinstrument> => {
+const getInstrument = async ({ symbol }: IgetInstrument): Promise<Iinstrument | null> => {
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');

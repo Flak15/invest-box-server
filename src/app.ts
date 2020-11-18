@@ -10,7 +10,7 @@ client.connect()
     app.listen(port, function () {
       console.log(`Server listening on port ${port}!`);
     });
-    // runBackground();
+    runBackground();
   })
   .catch((e: Error) => {
     console.log(e.message);

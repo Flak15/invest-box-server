@@ -4,11 +4,15 @@ import config from 'config';
 
 const updatePrices = async () => {
 	const instruments = await Instrument.getAllInstruments();
-	const symbols = instruments.map(instrument => instrument.symbol)
+	const symbols = instruments.map(instrument => instrument.symbol);
 	await Promise.all(
 		symbols.map(async (symbol) => {
-			const newPriceData = await getPrice(symbol);
-			await Instrument.updateInstrument({ symbol, price: newPriceData.price });
+			try {
+				const newPriceData = await getPrice(symbol);
+				await Instrument.updateInstrument({ symbol, price: newPriceData.price });
+			} catch (e) {
+				console.log('Update error: ', e.message);
+			}
 		})
 	);
 	setTimeout(() => {
@@ -19,7 +23,6 @@ const updatePrices = async () => {
 export default () => {
 	setTimeout(() => {
 		updatePrices();
-		console.log('tick');
 	  }, config.get('updateTime'));
 }
 

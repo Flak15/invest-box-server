@@ -15,8 +15,8 @@ export interface IpriceData {
 }
 
 export interface IauthData {
-  user: string,
-  pass: string
+  username: string,
+  password: string
 }
 
 export interface Iportfolio {
@@ -36,6 +36,6 @@ export interface Iinstrument {
 
 export interface Iuser {
   _id: string,
-  user: string,
-  pass: string
+  username: string,
+  password: string
 }

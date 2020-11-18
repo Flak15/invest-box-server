@@ -12,8 +12,11 @@ interface IupdateResponse {
 }
 router.post('/update', async (req, res) => {
   const { username, symbol, value }: IupdateResponse = req.body;
-  const user = await User.getUser({ username });
   try {
+    const user = await User.getUser({ username });
+    if (!user) {
+      throw new Error('User was not found!');
+    }
     await Portfolio.updateValue({ userId: user._id, symbol, value });
     res.json({ message: 'Portfolio updated', symbol, value });
   }
@@ -35,6 +38,9 @@ router.post('/add', async (req, res) => { // curl -X POST -H "Content-Type: appl
       await Instrument.addInstrument(priceData);
     }
     const user = await User.getUser({ username });
+    if (!user) {
+      throw new Error('User was not found!');
+    }
     await Portfolio.addInstument({ userId: user._id, symbol: symbol.toUpperCase(), value });
     res.json({ message: 'instrument added to portfolio', symbol, value });
   }
@@ -48,8 +54,11 @@ interface IremoveResponse {
 }
 router.post('/remove', async (req, res) => {
   const { username, symbol }: IremoveResponse = req.body;
-  const user = await User.getUser({ username });
   try {
+    const user = await User.getUser({ username });
+    if (!user) {
+      throw new Error('User was not found!');
+    }
     await Portfolio.removeInstrument({ userId: user._id, symbol });
     res.json({ message: 'instrument removed', symbol });
   }
@@ -60,11 +69,17 @@ router.post('/remove', async (req, res) => {
 
 router.get('/:username', async (req, res) => { // curl localhost:4000/portfolio/user2
   const username: string = req.params.username;
-  const user = await User.getUser({ username });
   try {
+    const user = await User.getUser({ username });
+    if (!user) {
+      throw new Error('User was not found!');
+    }
     const portfolio = await Portfolio.getPortfolio({ userId: user._id });
     const portfolioPromises = portfolio.map(async ({ symbol, value }) => {
       const instrument = await Instrument.getInstrument({ symbol });
+      if (!instrument) {
+        throw new Error('Instrument was not found!');
+      }
       return { ...instrument, value, totalValue: value * instrument.price };
     });
     const portfolioWithValue = await Promise.all(portfolioPromises);

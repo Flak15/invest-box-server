@@ -9,20 +9,22 @@ import { IauthData } from '../types/index';
 const app = express();
 app.use(express.json());
 
-const basicAuthorizer = (username: string, pass: string, cb) => {
+
+const basicAuthorizer = (username: string, password: string, cb: (e: Error | null, r: boolean)=>any) => {
   User.getUser({ username }).then(finded => {
     if (!finded) {
       return cb(null, false);
     }
-    const isPassEqual: boolean = finded.pass === encrypt(pass);
+    const isPassEqual: boolean = finded.password === encrypt(`${username}.${password}`);
     cb(null, isPassEqual);
   });
 };
 
 app.post('/user', async (req, res) => {
-  const { user, pass }: IauthData = req.body;
+  const { username, password }: IauthData = req.body;
+  console.log(username, password);
   try {
-    await User.insertUser({ user, pass });
+    await User.insertUser({ username, password: encrypt(`${username}.${password}`) });
     res.end('User created');
   } catch (e) {
     res.json({ message: e.message });
@@ -31,7 +33,7 @@ app.post('/user', async (req, res) => {
 app.use(cors());
 
 app.use(basicAuth({ authorizer: basicAuthorizer, authorizeAsync: true, unauthorizedResponse: 'Authorization failed' }));
-app.get('/', function (req, res) {
+app.get('/', function (_, res) {
   res.send('ok');
 });
 app.use('/portfolio', portfolio);
