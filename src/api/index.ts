@@ -8,7 +8,7 @@ import instrument from './instrument.api.js';
 import { IauthData } from '../types/index';
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 
 const basicAuthorizer = (username: string, password: string, cb: (e: Error | null, r: boolean)=>any) => {
   User.getUser({ username }).then(finded => {
@@ -20,9 +20,9 @@ const basicAuthorizer = (username: string, password: string, cb: (e: Error | nul
   });
 };
 
-app.post('/user', async (req, res) => {
+app.post('/user', cors(), async (req, res) => {
   const { username, password }: IauthData = req.body;
-  console.log(username, password);
+  // const code: string = req.body.code;
   try {
     await User.insertUser({ username, password: encrypt(`${username}.${password}`) });
     res.end('User created');
@@ -30,12 +30,12 @@ app.post('/user', async (req, res) => {
     res.json({ message: e.message });
   }
 });
-app.use(cors());
-
-app.use(basicAuth({ authorizer: basicAuthorizer, authorizeAsync: true, unauthorizedResponse: 'Authorization failed' }));
 app.get('/', function (_, res) {
   res.send('ok');
 });
+
+app.use(basicAuth({ authorizer: basicAuthorizer, authorizeAsync: true, unauthorizedResponse: 'Authorization failed' }));
+
 app.use('/portfolio', portfolio);
 app.use('/instrument', instrument);
 
