@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-const read = async () => {
+const getAllStocksCode = async () => {
   const csv = await fs.readFile(path.resolve(process.cwd(), 'ListingSecurityList.csv') , 'utf-8');
 
   const rows = csv.split('\n');
@@ -18,7 +18,8 @@ const read = async () => {
     })
   })
 
-  console.log(parsed.s_RTS_code.toString())
-  console.log('Total:', parsed.s_RTS_code.length)
+  // console.log(parsed.s_RTS_code.toString())
+  // console.log('Total:', parsed.s_RTS_code.toString())
+  return parsed.s_RTS_code;
 }
-read();
+export default getAllStocksCode;
