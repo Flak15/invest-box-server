@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node dest/app.js",
+    "start": "node dist/app.js",
     "server": "nodemon dist/app.js"
   },
   "repository": {

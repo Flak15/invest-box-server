@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IpriceData } from '../types/index';
+import { IpriceData, IsummaryDetail } from '../types/index';
 
 const getPriceData = async (s: string): Promise<IpriceData> => {
   try {
@@ -10,6 +10,17 @@ const getPriceData = async (s: string): Promise<IpriceData> => {
   } catch (e) {
     console.log(e.message);
     throw new Error(`Error while getting symbol price: ${e.message}`);
+  }
+};
+
+export const getFinanceData = async (s: string): Promise<IsummaryDetail> => {
+  try {
+    const res = await axios.get(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${s}?modules=summaryDetail`);
+    const summaryDetail: IsummaryDetail = res.data.quoteSummary.result[0].summaryDetail;
+    return summaryDetail;
+  } catch (e) {
+    console.log(e.message);
+    throw new Error(`Error while getting symbol summary data: ${e.message}`);
   }
 };
 

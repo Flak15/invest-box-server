@@ -9,7 +9,7 @@ const addInstrument = async ({ symbol, shortName, price, currency }: IpriceData)
   try {
     const db = client.db(dbName);
     const instruments = db.collection('Instruments');
-    await instruments.createIndex({ symbol: 1 }, { unique: true });
+    await instruments.createIndex({ symbol: 1 }, { unique: true }); // отдельная проверка
     await instruments.insertOne({ symbol, price, shortName, currency });
   } catch (e) {
     console.log(e);

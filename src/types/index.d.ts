@@ -14,6 +14,13 @@ export interface IpriceData {
   symbol: string
 }
 
+export interface IsummaryDetail {
+  [key:string]: {
+    raw: number,
+    fmt: string
+  }
+}
+
 export interface IauthData {
   username: string,
   password: string
