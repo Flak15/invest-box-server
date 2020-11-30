@@ -35,6 +35,7 @@ router.post('/add', async (req, res) => { // curl -X POST -H "Content-Type: appl
     const instrument = await Instrument.getInstrument({ symbol: symbol.toUpperCase() });
     if (!instrument) {
       const priceData = await getPriceData(symbol);
+      console.log(priceData.toString());
       await Instrument.addInstrument(priceData);
     }
     const user = await User.getUser({ username });
@@ -67,7 +68,7 @@ router.post('/remove', async (req, res) => {
   }
 });
 
-router.get('/:username', async (req, res) => { // curl localhost:4000/portfolio/user2
+router.get('/:username', async (req, res) => { 
   const username: string = req.params.username;
   try {
     const user = await User.getUser({ username });
@@ -80,7 +81,7 @@ router.get('/:username', async (req, res) => { // curl localhost:4000/portfolio/
       if (!instrument) {
         throw new Error('Instrument was not found!');
       }
-      return { ...instrument, value, totalValue: value * instrument.price };
+      return { ...instrument, value, totalValue: value * instrument.price }; // отправляет полностью инструмент
     });
     const portfolioWithValue = await Promise.all(portfolioPromises);
     res.json({ p: JSON.stringify(portfolioWithValue) });

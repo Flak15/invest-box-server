@@ -8,17 +8,15 @@ export interface IdbConfig {
 
 export interface IpriceData {
   price: number,
-  currency: string,
-  shortName: string,
-  exchangeName: string,
-  symbol: string
+  // currency: string,
+  // shortName: string,
+  // exchangeName: string,
+  // symbol: string,
+  [key:string]: Metadata,
 }
 
 export interface IsummaryDetail {
-  [key:string]: {
-    raw: number,
-    fmt: string
-  }
+  [key:string]: MetaData
 }
 
 export interface IauthData {
