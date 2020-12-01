@@ -15,7 +15,7 @@ export interface IpriceData {
   [key:string]: Metadata,
 }
 
-export interface IsummaryDetail {
+export interface IfinancialData {
   [key:string]: MetaData
 }
 

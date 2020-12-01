@@ -9,7 +9,17 @@ import { IauthData } from '../types/index';
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+app.post('/user', cors(), async (req, res) => {
+  const { username, password }: IauthData = req.body;
+  // const code: string = req.body.code;
+  console.log(username, password);
+  try {
+    await User.insertUser({ username, password: encrypt(`${username}.${password}`) });
+    res.end('User created');
+  } catch (e) {
+    res.json({ message: e.message });
+  }
+});
 const basicAuthorizer = (username: string, password: string, cb: (e: Error | null, r: boolean)=>any) => {
   User.getUser({ username }).then(finded => {
     if (!finded) {
@@ -20,16 +30,7 @@ const basicAuthorizer = (username: string, password: string, cb: (e: Error | nul
   });
 };
 
-app.post('/user', cors(), async (req, res) => {
-  const { username, password }: IauthData = req.body;
-  // const code: string = req.body.code;
-  try {
-    await User.insertUser({ username, password: encrypt(`${username}.${password}`) });
-    res.end('User created');
-  } catch (e) {
-    res.json({ message: e.message });
-  }
-});
+
 app.get('/', function (_, res) {
   res.send('ok');
 });

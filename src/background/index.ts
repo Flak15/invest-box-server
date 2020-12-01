@@ -1,4 +1,4 @@
-import getPrice from '../services/yahoo.js';
+import getPriceData from '../services/yahoo.js';
 import Instrument from '../models/Instrument.js';
 import config from 'config';
 
@@ -9,8 +9,8 @@ const updatePrices = async () => {
 		await Promise.all(
 			symbols.map(async (symbol) => {
 				try {
-					const newPriceData = await getPrice(symbol);
-					await Instrument.updateInstrument({ symbol, price: newPriceData.price });
+					const { price, priceData, financialData } = await getPriceData(symbol);
+					await Instrument.updateInstrument({ symbol, price, priceData, financialData });
 				} catch (e) {
 					console.log('Update error: ', e.message);
 				}
@@ -20,9 +20,9 @@ const updatePrices = async () => {
 		console.log('Error while getting symbols: ', e.message);
 	}
 
-	setTimeout(() => {
-		updatePrices();
-	}, config.get('updateTime'));
+	// setTimeout(() => {
+	// 	updatePrices();
+	// }, config.get('updateTime'));
 };
 
 export default () => {

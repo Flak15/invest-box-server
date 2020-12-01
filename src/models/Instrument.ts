@@ -1,6 +1,6 @@
 import client from './Client.js';
 import config from 'config';
-import { IdbConfig, IpriceData, Iinstrument, IsummaryDetail } from '../types/index';
+import { IdbConfig, IpriceData, Iinstrument, IfinancialData } from '../types/index';
 
 const dbConfig: IdbConfig = config.get('db');
 const dbName = dbConfig.name;
@@ -32,13 +32,14 @@ const getInstrument = async ({ symbol }: IgetInstrument): Promise<Iinstrument | 
 interface IupdateInstrument {
   symbol: string,
   price?: number,
-  financeData?: IsummaryDetail
+  financialData?: IfinancialData,
+  priceData?: IpriceData
 }
-const updateInstrument = async ({ symbol, price, financeData }: IupdateInstrument ) => {
+const updateInstrument = async ({ symbol, price, financialData, priceData }: IupdateInstrument ) => {
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');
-    await Instruments.updateOne({ symbol }, { $set: { price, financeData }});
+    await Instruments.updateOne({ symbol }, { $set: { price, financialData, priceData }});
   } catch (e) {
     console.log(e);
     throw new Error(e);
