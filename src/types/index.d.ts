@@ -35,8 +35,8 @@ export interface Iinstrument {
   _id: string,
   symbol: string,
   price: number,
-  shortName: string,
-  currency: string
+  priceData: IpriceData,
+  financialData: IfinancialData
 }
 
 export interface Iuser {

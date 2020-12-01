@@ -16,13 +16,12 @@ const getAllStocksCode = async () => {
         parsed[keys[i]].push(value);
       });
     });
-    return parsed.Symbol.filter(s => s);
+    return parsed.Symbol.filter(s => s).map(s => s.replace('.', '-'));
   } catch (e) {
     console.log('Error while reading symbols list: ', e);
     return [];
   }
 
 };
-
 
 export default getAllStocksCode;

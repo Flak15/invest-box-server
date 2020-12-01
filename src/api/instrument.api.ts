@@ -16,5 +16,15 @@ router.post('/add', async (req, res) => {
   }
 });
 
+router.get('/all', async (_, res) => {
+  try {
+    const allInstruments = await Instrument.getAllInstruments();
+    res.json({ allI: JSON.stringify(allInstruments) });
+  }
+  catch (e) {
+    res.json({ message: e.message });
+  }
+});
+
 
 export default router;
