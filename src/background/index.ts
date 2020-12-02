@@ -9,8 +9,8 @@ const updatePrices = async () => {
 		await Promise.all(
 			symbols.map(async (symbol) => {
 				try {
-					const { price, priceData, financialData } = await getPriceData(symbol);
-					await Instrument.updateInstrument({ symbol, price, priceData, financialData });
+					const { price, priceData, financialData, summaryDetail } = await getPriceData(symbol);
+					await Instrument.updateInstrument({ symbol, price, priceData, financialData, summaryDetail });
 				} catch (e) {
 					console.log('Update error: ', e.message);
 				}

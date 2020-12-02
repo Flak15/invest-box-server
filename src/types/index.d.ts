@@ -19,6 +19,10 @@ export interface IfinancialData {
   [key:string]: MetaData
 }
 
+export interface IsummaryDetail {
+  [key:string]: MetaData
+}
+
 export interface IauthData {
   username: string,
   password: string
