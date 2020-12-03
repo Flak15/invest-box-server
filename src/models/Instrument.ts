@@ -8,7 +8,7 @@ const dbName = dbConfig.name;
 const addInstrument = async ({ symbol, price, priceData, financialData }: IpriceData) => {
   try {
     const db = client.db(dbName);
-    const instruments = db.collection('Instruments');
+    const instruments = db.collection('Instruments'); // Instruments -> collectionName
     await instruments.createIndex({ symbol: 1 }, { unique: true }); // отдельная проверка
     await instruments.insertOne({ symbol, price, priceData, financialData });
   } catch (e) {
@@ -23,7 +23,7 @@ const getInstrument = async ({ symbol }: IgetInstrument): Promise<Iinstrument | 
   try {
     const db = client.db(dbName);
     const Instruments = db.collection('Instruments');
-    return await Instruments.findOne({ symbol });
+    return await Instruments.findOne({ symbol }); //projection
   } catch (e) {
     console.log(e);
     throw new Error(e);
